@@ -19,7 +19,7 @@ export const login = async (userData) => {
   if (res.data.token) {
     localStorage.setItem(
       'user',
-      JSON.stringify({ token: res.data.token, userId: res.data.userId })
+      JSON.stringify({ token: res.data.token, userId: res.data.userId,  username: res.data.username })
     );
   }
   return res.data;

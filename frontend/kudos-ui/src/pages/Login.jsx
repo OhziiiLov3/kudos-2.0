@@ -23,7 +23,7 @@ const Login = () => {
     <div className="auth-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input name="username" onChange={handleChange} placeholder="Username" required />
+        <input name="email" type="email" onChange={handleChange} placeholder="Email" required />
         <input name="password" type="password" onChange={handleChange} placeholder="Password" required />
         <button type="submit">Login</button>
       </form>

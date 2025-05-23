@@ -1,4 +1,5 @@
 import '../styles/BoardList.css';
+import BoardCard from './BoardCard';
 
 const BoardList = ({ boards }) => {
   if (!boards.length) {
@@ -8,14 +9,7 @@ const BoardList = ({ boards }) => {
   return (
     <div className="boardlist-container">
       {boards.map((board) => (
-        <div
-          key={board.id}
-          className="boardlist-card"
-          onClick={() => window.location.href = `/boards/${board.id}`}
-        >
-          <h3>{board.name}</h3>
-          <p>{board.description || 'No description'}</p>
-        </div>
+        <BoardCard key={board.board_id} board={board} />
       ))}
     </div>
   );
