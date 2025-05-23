@@ -8,14 +8,22 @@ import BoardList from "../components/BoardList";
 import CreateBoardModal from "../components/CreateBoardModal";
 import EditBoardModal from "../components/EditBoardModal";
 import Footer from "../components/Footer";
-import { getAllBoards, createBoard, deleteBoard, updateBoard } from "../services/boardService";
+
+import {
+  getAllBoards,
+  createBoard,
+  deleteBoard,
+  updateBoard,
+} from "../services/boardService";
+
+const categories = ["All", "Recent", "Celebration", "Thank you", "Inspiration"];
 
 const Home = () => {
   const [boards, setBoards] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [showModal, setShowModal] = useState(false);
-   const [editBoard, setEditBoard] = useState(null);
-
+  const [editBoard, setEditBoard] = useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -42,43 +50,96 @@ const Home = () => {
   };
 
   const handleDeleteBoard = async (boardId) => {
-  try {
-    await deleteBoard(boardId);
-    setBoards((prev) => prev.filter((b) => b.board_id !== boardId));
-  } catch (error) {
-    console.error("Failed to delete board:", error);
-  }
-};
+    try {
+      await deleteBoard(boardId);
+      setBoards((prev) => prev.filter((b) => b.board_id !== boardId));
+    } catch (error) {
+      console.error("Failed to delete board:", error);
+    }
+  };
 
- const handleUpdateBoard = async (boardData) => {
+  const handleUpdateBoard = async (boardData) => {
     try {
       const updatedBoard = await updateBoard(boardData.board_id, boardData);
       setBoards((prev) =>
         prev.map((b) => (b.board_id === updatedBoard.board_id ? updatedBoard : b))
       );
-      setEditBoard(null); 
+      setEditBoard(null);
     } catch (error) {
       console.error("Failed to update board:", error);
     }
   };
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredBoards = boards.filter((board) => {
+
+    if (
+      selectedCategory !== "All" &&
+      selectedCategory !== "Home" &&
+      selectedCategory !== "Recent" &&
+      board.category !== selectedCategory
+    ) {
+      return false;
+    }
+
+
+    if (searchTerm.trim() !== "") {
+      return board.title.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+
+    return true;
+  });
+
+  const displayedBoards =
+    selectedCategory === "Recent"
+      ? [...boards]
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 6)
+      : filteredBoards;
 
   return (
     <div className="homepage">
       <Header onCreateBoardClick={() => setShowModal(true)} />
       <Banner />
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <BoardList boards={boards} currentUser={user} onEdit={(board)=> setEditBoard(board)} onDelete={handleDeleteBoard} />
+
+      <SearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onSearch={handleSearch}
+      />
+
+      <div className="category-filter">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            className={selectedCategory === cat ? "active" : ""}
+            onClick={() => setSelectedCategory(cat)}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <BoardList
+        boards={displayedBoards}
+        currentUser={user}
+        onEdit={(board) => setEditBoard(board)}
+        onDelete={handleDeleteBoard}
+      />
+
       <Footer />
-         {showModal && (
+
+      {showModal && (
         <CreateBoardModal
           onClose={() => setShowModal(false)}
           onCreate={handleCreateBoard}
         />
       )}
 
-      {/* Edit Board */}
-         {editBoard && (
+      {editBoard && (
         <EditBoardModal
           board={editBoard}
           onClose={() => setEditBoard(null)}
@@ -90,3 +151,4 @@ const Home = () => {
 };
 
 export default Home;
+
