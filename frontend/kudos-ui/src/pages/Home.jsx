@@ -74,24 +74,25 @@ const Home = () => {
     setSearchTerm(term);
   };
 
-  const filteredBoards = boards.filter((board) => {
+const filteredBoards = boards.filter((board) => {
+  const category = (board.category || "").trim().toLowerCase();
+  const selected = selectedCategory.trim().toLowerCase();
 
-    if (
-      selectedCategory !== "All" &&
-      selectedCategory !== "Home" &&
-      selectedCategory !== "Recent" &&
-      board.category !== selectedCategory
-    ) {
-      return false;
-    }
+  if (
+    selected !== "all" &&
+    selected !== "recent" &&
+    category !== selected
+  ) {
+    return false;
+  }
 
+  if (searchTerm.trim() !== "") {
+    return board.title.toLowerCase().includes(searchTerm.toLowerCase());
+  }
 
-    if (searchTerm.trim() !== "") {
-      return board.title.toLowerCase().includes(searchTerm.toLowerCase());
-    }
+  return true;
+});
 
-    return true;
-  });
 
   const displayedBoards =
     selectedCategory === "Recent"
