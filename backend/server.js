@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 
 const authRoutes = require('./routes/authRoutes');
 const boardRoutes  = require('./routes/boardRoutes.js');
+const cardRoutes = require('./routes/cardRoutes');
+
 
 
 dotenv.config();
@@ -27,6 +29,7 @@ app.get('/api', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/boards', boardRoutes);
+app.use('/api/cards', cardRoutes);
 
 
 

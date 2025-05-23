@@ -1,15 +1,18 @@
-const express = require('express');
+const express = require("express");
 const {
-    createBoard,
-} =  require('../controllers/boardController.js');
+  createBoard,
+  getAllBoards,
+  getBoardById,
+  updateBoard,
+  deleteBoard,
+} = require("../controllers/boardController.js");
 
 const router = express.Router();
 
-
-
-
-router.post('/', createBoard);
-
-
+router.post("/", createBoard);
+router.get("/", getAllBoards);
+router.get("/:id", getBoardById);
+router.put("/:id", updateBoard);
+router.delete("/:id", deleteBoard);
 
 module.exports = router;
