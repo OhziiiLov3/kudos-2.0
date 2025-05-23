@@ -6,13 +6,18 @@ import Banner from "../components/Banner";
 import SearchBar from "../components/SearchBar";
 import BoardList from "../components/BoardList";
 import CreateBoardModal from "../components/CreateBoardModal";
+import EditBoardModal from "../components/EditBoardModal";
 import Footer from "../components/Footer";
-import { getAllBoards, createBoard } from "../services/boardService";
+import { getAllBoards, createBoard, deleteBoard, updateBoard } from "../services/boardService";
 
 const Home = () => {
   const [boards, setBoards] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
+   const [editBoard, setEditBoard] = useState(null);
+
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchBoards = async () => {
@@ -36,17 +41,48 @@ const Home = () => {
     }
   };
 
+  const handleDeleteBoard = async (boardId) => {
+  try {
+    await deleteBoard(boardId);
+    setBoards((prev) => prev.filter((b) => b.board_id !== boardId));
+  } catch (error) {
+    console.error("Failed to delete board:", error);
+  }
+};
+
+ const handleUpdateBoard = async (boardData) => {
+    try {
+      const updatedBoard = await updateBoard(boardData.board_id, boardData);
+      setBoards((prev) =>
+        prev.map((b) => (b.board_id === updatedBoard.board_id ? updatedBoard : b))
+      );
+      setEditBoard(null); 
+    } catch (error) {
+      console.error("Failed to update board:", error);
+    }
+  };
+
+
   return (
     <div className="homepage">
       <Header onCreateBoardClick={() => setShowModal(true)} />
       <Banner />
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <BoardList boards={boards} />
+      <BoardList boards={boards} currentUser={user} onEdit={(board)=> setEditBoard(board)} onDelete={handleDeleteBoard} />
       <Footer />
          {showModal && (
         <CreateBoardModal
           onClose={() => setShowModal(false)}
           onCreate={handleCreateBoard}
+        />
+      )}
+
+      {/* Edit Board */}
+         {editBoard && (
+        <EditBoardModal
+          board={editBoard}
+          onClose={() => setEditBoard(null)}
+          onUpdate={handleUpdateBoard}
         />
       )}
     </div>

@@ -42,3 +42,23 @@
   color: #72767d;
   margin-top: 4px;
 }
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 10px;
+  font-size: 1.2rem;
+}
+
+.icon {
+  cursor: pointer;
+  color: #b9bbbe;
+  transition: color 0.2s;
+}
+
+.icon:hover {
+  color: #fff;
+}
+
