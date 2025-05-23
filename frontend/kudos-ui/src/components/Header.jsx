@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../styles/Header.css';
 
-const Header = () => {
+const Header = ({onCreateBoardClick}) => {
   const user = JSON.parse(localStorage.getItem('user'));
   const [showOptions, setShowOptions] = useState(false);
 
@@ -17,6 +17,11 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header__title">Kudos App</div>
+        {user && (
+        <button className="header__button" onClick={onCreateBoardClick}>
+          + New Board
+        </button>
+      )}
       {user ? (
         <button className="header__button logout" onClick={handleLogout}>
           Logout
