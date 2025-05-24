@@ -4,7 +4,6 @@ import "../styles/CardModal.css"; // We’ll define basic styles here
 const CardModal = ({ show, onClose, onCreate }) => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [author, setAuthor] = useState("");
   const [gifQuery, setGifQuery] = useState("");
   const [gifResults, setGifResults] = useState([]);
   const [selectedGif, setSelectedGif] = useState("");

@@ -14,7 +14,6 @@ const BoardDetail = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
-
   useEffect(() => {
     const fetchBoardAndCards = async () => {
       try {
@@ -35,14 +34,17 @@ const BoardDetail = () => {
   if (!board) return <p>Board not found.</p>;
 
   const handleCreateCard = async (cardData) => {
-  try {
-    const newCard = await createCard({ ...cardData, board_id: board.board_id });
-    setCards(prev => [...prev, newCard]);
-    setShowModal(false);
-  } catch (err) {
-    console.error("Error creating card:", err);
-  }
-};
+    try {
+      const newCard = await createCard({
+        ...cardData,
+        board_id: board.board_id,
+      });
+      setCards((prev) => [...prev, newCard]);
+      setShowModal(false);
+    } catch (err) {
+      console.error("Error creating card:", err);
+    }
+  };
 
   return (
     <div className="board-detail-container">
@@ -62,7 +64,22 @@ const BoardDetail = () => {
         {cards.length ? (
           <div className="card-grid">
             {cards.map((card) => (
-              <Card key={card.card_id} card={card} />
+              <Card
+                key={card.card_id}
+                card={card}
+                onCardDelete={(deletedId) =>
+                  setCards((prev) =>
+                    prev.filter((c) => c.card_id !== deletedId)
+                  )
+                }
+                onCardUpdate={(updatedCard) =>
+                  setCards((prev) =>
+                    prev.map((c) =>
+                      c.card_id === updatedCard.card_id ? updatedCard : c
+                    )
+                  )
+                }
+              />
             ))}
           </div>
         ) : (

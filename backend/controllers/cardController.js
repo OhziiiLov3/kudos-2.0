@@ -60,11 +60,11 @@ const updateCard = async (req, res) => {
     const card_id = parseInt(req.params.card_id);
     if (isNaN(card_id)) return res.status(400).json({ error: 'Invalid card_id' });
 
-    const { title, message, gifUrl } = req.body;
+    const { title, message, gifUrl, upvotes } = req.body;
 
     const updatedCard = await prisma.card.update({
       where: { card_id },
-      data: { title, message, gifUrl },
+      data: { title, message, gifUrl, upvotes }, // include upvotes!
     });
 
     res.status(200).json(updatedCard);
@@ -73,6 +73,7 @@ const updateCard = async (req, res) => {
     res.status(500).json({ error: 'Failed to update card' });
   }
 };
+
 
 // DELETE a card
 const deleteCard = async (req, res) => {
