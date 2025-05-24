@@ -1,0 +1,78 @@
+
+.board-detail-container {
+  height: 100vh;
+  width: 100vw;  
+  padding: 1.5rem 2rem;
+  background-color: #2f3136;
+  color: #dcddde;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  overflow-y: auto; 
+  box-sizing: border-box;
+}
+
+
+.board-detail-container h1 {
+  font-size: 2.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.board-detail-container p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #b9bbbe;
+}
+
+.board-detail-container .board-category {
+  font-weight: 600;
+  color: #7289da;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 1rem;
+}
+
+.board-detail-container .board-author {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #8e9297;
+}
+
+.board-detail-container .board-date {
+  color: #8e9297;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.board-cards-section {
+  margin-top: 2rem;
+}
+
+
+.board-card {
+  background-color: #36393f;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  color: #dcddde;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.board-card:hover {
+  background-color: #40444b;
+}
+
+
+@media (max-width: 600px) {
+  .board-detail-container {
+    margin: 1rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .board-detail-container h1 {
+    font-size: 1.75rem;
+  }
+}
